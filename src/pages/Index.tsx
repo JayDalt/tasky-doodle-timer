@@ -8,6 +8,7 @@ interface Task {
   title: string;
   completed: boolean;
   notes?: string;
+  createdAt: Date;
 }
 
 const Index = () => {
@@ -17,18 +18,26 @@ const Index = () => {
       title: "Complete project proposal",
       completed: false,
       notes: "Include budget estimates and timeline",
+      createdAt: new Date("2024-03-15"),
     },
     {
       id: "2",
       title: "Review client feedback",
       completed: true,
       notes: "Focus on UI/UX suggestions",
+      createdAt: new Date("2024-03-16"),
     },
   ]);
 
   const toggleTask = (id: string) => {
     setTasks(tasks.map(task => 
       task.id === id ? { ...task, completed: !task.completed } : task
+    ));
+  };
+
+  const updateNotes = (id: string, notes: string) => {
+    setTasks(tasks.map(task =>
+      task.id === id ? { ...task, notes } : task
     ));
   };
 
@@ -39,7 +48,7 @@ const Index = () => {
         <div className="max-w-3xl mx-auto">
           <div className="flex justify-between items-center mb-8">
             <h2 className="text-3xl font-semibold">Today's Tasks</h2>
-            <button className="flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-lg hover:bg-secondary transition-colors">
+            <button className="flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors">
               <PlusCircle className="w-5 h-5" />
               Add Task
             </button>
@@ -47,7 +56,12 @@ const Index = () => {
           
           <div className="space-y-4">
             {tasks.map(task => (
-              <TaskCard key={task.id} task={task} onToggle={toggleTask} />
+              <TaskCard 
+                key={task.id} 
+                task={task} 
+                onToggle={toggleTask}
+                onUpdateNotes={updateNotes}
+              />
             ))}
           </div>
         </div>
