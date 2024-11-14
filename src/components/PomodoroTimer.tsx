@@ -7,7 +7,7 @@ export const PomodoroTimer = () => {
   const [isActive, setIsActive] = useState(false);
 
   useEffect(() => {
-    let interval: number | undefined;
+    let interval: NodeJS.Timeout | undefined;
 
     if (isActive) {
       interval = setInterval(() => {
@@ -25,7 +25,9 @@ export const PomodoroTimer = () => {
       }, 1000);
     }
 
-    return () => clearInterval(interval);
+    return () => {
+      if (interval) clearInterval(interval);
+    };
   }, [isActive, minutes, seconds]);
 
   const reset = () => {
